@@ -1,6 +1,10 @@
 package com.luizalabs.desafio.msg;
 
-import org.junit.jupiter.api.BeforeEach;
+import static com.luizalabs.desafio.utils.DTOUtils.getDefaultEntity;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.*;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -8,11 +12,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.amqp.core.Queue;
-
-import static com.luizalabs.desafio.utils.DTOUtils.getDefaultEntity;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.*;
 
 import com.luizalabs.desafio.repository.entity.Communication;
 

@@ -30,7 +30,7 @@ import com.luizalabs.desafio.repository.CommunicationRepository;
 import com.luizalabs.desafio.repository.entity.Communication;
 
 @ExtendWith(MockitoExtension.class)
-public class CommunicationServiceTest {
+class CommunicationServiceTest {
 
     @Mock
     private CommunicationRepository repository;
@@ -151,7 +151,7 @@ public class CommunicationServiceTest {
 
         assertThrows(CommunicationNotFoundException.class, () -> service.sendCommunication(1L));
 
-        verify(producer, never()).sendMessage(any(Communication.class));  // Verifica que sendMessage não foi chamado
+        verify(producer, never()).sendMessage(any(Communication.class));
     }
 
     @Test
