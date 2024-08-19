@@ -1,0 +1,58 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    ports:
+      - "8080:8080"
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+      postgres:
+        condition: service_healthy
+    networks:
+      - app-network
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/desafio
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+      SPRING_RABBITMQ_HOST: rabbitmq
+      SPRING_RABBITMQ_PORT: 5672
+      SPRING_RABBITMQ_USERNAME: guest
+      SPRING_RABBITMQ_PASSWORD: guest
+
+  rabbitmq:
+    build:
+      context: ./docker/config/rabbitmq
+      dockerfile: Dockerfile
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    networks:
+      - app-network
+    healthcheck:
+      test: ["CMD-SHELL", "rabbitmqctl status"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  postgres:
+    build:
+      context: ./docker/config/postgresql
+      dockerfile: Dockerfile
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: desafio
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    networks:
+      - app-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+networks:
+  app-network:
