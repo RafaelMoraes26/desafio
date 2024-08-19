@@ -8,7 +8,7 @@ import com.luizalabs.desafio.enums.CommunicationSendStatus;
 import com.luizalabs.desafio.exception.CommunicationAlreadyCancelledException;
 import com.luizalabs.desafio.exception.CommunicationNotFoundException;
 import com.luizalabs.desafio.mapper.CommunicationMapper;
-import com.luizalabs.desafio.msg.producer.CommunicationProducer;
+import com.luizalabs.desafio.msg.CommunicationProducer;
 import com.luizalabs.desafio.repository.CommunicationRepository;
 import com.luizalabs.desafio.repository.entity.Communication;
 
@@ -29,7 +29,8 @@ public class CommunicationService {
     }
 
     public CommunicationResponse create(CommunicationRequest request) {
-        Communication entity = repository.save(mapper.fromRequestToEntity(request));
+        Communication entity = mapper.fromRequestToEntity(request);
+        entity = repository.save(entity);
         return mapper.fromEntityToResponse(entity);
     }
 
@@ -47,8 +48,9 @@ public class CommunicationService {
         // TODO: Aqui deve ser implementada a lógica de envio agendado ao rabbitMQ.
         Communication communication = findById(id);
         validateCommunicationStatusIsScheduled(communication);
-        producer.sendMessage(communication);
-        updateCommunicationStatus(communication.getId(), CommunicationSendStatus.SENT);
+        if(producer.sendMessage(communication)) {
+            updateCommunicationStatus(communication.getId(), CommunicationSendStatus.SENT);
+        }
     }
 
     private Communication findById(Long id) {

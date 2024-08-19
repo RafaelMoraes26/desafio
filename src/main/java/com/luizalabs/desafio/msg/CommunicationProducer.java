@@ -1,8 +1,7 @@
-package com.luizalabs.desafio.msg.producer;
+package com.luizalabs.desafio.msg;
 
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.amqp.core.Queue;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.luizalabs.desafio.repository.entity.Communication;
@@ -22,9 +21,14 @@ public class CommunicationProducer {
         this.communicationQueue = communicationQueue;
     }
 
-    public void sendMessage(Communication communication) {
-        log.info(">>> tentando enviar. {}", communicationQueue.getName());
-        amqpTemplate.convertAndSend(communicationQueue.getName(), communication);
-        log.info("Sent communication message: {}", communication);
+    public boolean sendMessage(Communication communication) {
+        try {
+            log.info("Sending communication message: {}", communication);
+            amqpTemplate.convertAndSend(communicationQueue.getName(), communication);
+            return true;
+        } catch (Exception e) {
+            log.error("Failed to send communication message: {}", communication, e);
+            return false;
+        }
     }
 }
