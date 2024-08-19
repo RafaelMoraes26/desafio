@@ -28,7 +28,9 @@ Execute o seguinte comando no diretório do projeto para construir e rodar a apl
 # Buildar, construir e subir imagens no docker
 gradle clean build && docker-compose build --no-cache && docker-compose up
 ```
-Após executar esses comandos, a aplicação estará acessível em [http://localhost:8080](http://localhost:8080).
+Após executar esses comandos, a aplicação estará acessível em [http://localhost:8080](http://localhost:8080)
+
+Também é possível acessar o swagger da aplicação em [http://localhost:8080/swagger-ui.html](http://localhost:8080/swagger-ui.html)
 
 ### Verificar Logs
 
