@@ -1,13 +1,15 @@
 package com.luizalabs.desafio;
 
+import org.springframework.amqp.rabbit.annotation.EnableRabbit;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class DesafioApplication {
+@EnableRabbit
+public class Application {
 
 	public static void main(String[] args) {
-		SpringApplication.run(DesafioApplication.class, args);
+		SpringApplication.run(Application.class, args);
 	}
 
 }
