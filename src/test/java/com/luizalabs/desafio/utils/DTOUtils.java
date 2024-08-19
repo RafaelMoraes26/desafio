@@ -12,8 +12,8 @@ public class DTOUtils {
 
     private static final String MESSAGE = "Test message";
     private static final String RECEIVER = "Test receiver";
-    private static final OffsetDateTime SCHEDULE_TIME = OffsetDateTime.now().plusDays(10);
     private static final OffsetDateTime NOW = OffsetDateTime.now();
+    private static final OffsetDateTime SCHEDULE_TIME = NOW.plusDays(10);
 
     public static CommunicationResponse getDefaultResponse() {
         CommunicationResponse response = new CommunicationResponse();

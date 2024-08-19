@@ -9,6 +9,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
@@ -22,6 +23,7 @@ import com.luizalabs.desafio.enums.CommunicationSendStatus;
 import com.luizalabs.desafio.enums.CommunicationType;
 import com.luizalabs.desafio.exception.CommunicationAlreadyCancelledException;
 import com.luizalabs.desafio.exception.CommunicationNotFoundException;
+import com.luizalabs.desafio.exception.CommunicationScheduleTimeExpiredException;
 import com.luizalabs.desafio.mapper.CommunicationMapper;
 import com.luizalabs.desafio.msg.CommunicationProducer;
 import com.luizalabs.desafio.repository.CommunicationRepository;
@@ -69,6 +71,13 @@ public class CommunicationServiceTest {
         assertEquals(result.getReceiver(), savedEntity.getReceiver());
         assertEquals(CommunicationType.PUSH, savedEntity.getType());
         assertEquals(CommunicationSendStatus.SCHEDULED, savedEntity.getStatus());
+    }
+
+    @Test
+    void createCommunication_scheduleTimeExpired() {
+        request.setScheduledTime(LocalDateTime.now().minusSeconds(10));
+
+        assertThrows(CommunicationScheduleTimeExpiredException.class, () -> service.create(request));
     }
 
     @Test

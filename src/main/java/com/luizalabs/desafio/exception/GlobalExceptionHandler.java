@@ -14,7 +14,7 @@ import com.luizalabs.desafio.dto.error.ErrorResponse;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(CommunicationNotFoundException.class)
-    public ResponseEntity<ErrorResponse> handleUserInfoNotFoundException(CommunicationNotFoundException ex, WebRequest request) {
+    public ResponseEntity<ErrorResponse> handleCommunicationNotFoundException(CommunicationNotFoundException ex, WebRequest request) {
         ErrorResponse errorResponse = new ErrorResponse(
             LocalDateTime.now(),
             HttpStatus.NOT_FOUND.value(),
@@ -27,6 +27,18 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(CommunicationAlreadyCancelledException.class)
     public ResponseEntity<ErrorResponse> handleCommunicationAlreadyCancelledException(CommunicationAlreadyCancelledException ex, WebRequest request) {
+        ErrorResponse errorResponse = new ErrorResponse(
+            LocalDateTime.now(),
+            HttpStatus.BAD_REQUEST.value(),
+            ex.getMessage(),
+            request.getDescription(false).replace("uri=", "")
+        );
+
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(CommunicationScheduleTimeExpiredException.class)
+    public ResponseEntity<ErrorResponse> handleCommunicationScheduleTimeExpiredException(CommunicationScheduleTimeExpiredException ex, WebRequest request) {
         ErrorResponse errorResponse = new ErrorResponse(
             LocalDateTime.now(),
             HttpStatus.BAD_REQUEST.value(),

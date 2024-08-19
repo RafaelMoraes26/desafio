@@ -17,7 +17,7 @@ public class CommunicationMapper {
         response.setId(entity.getId());
         response.setMessage(entity.getMessage());
         response.setReceiver(entity.getReceiver());
-        response.setScheduledTime(sanitizeZoneToResponse(entity.getScheduledTime()));
+        response.setScheduledTime(entity.getScheduledTime().toLocalDateTime());
         response.setType(entity.getType());
         response.setStatus(entity.getStatus());
         return response;
@@ -37,10 +37,5 @@ public class CommunicationMapper {
         return ldt.atZone(ZoneId.systemDefault())
             .withZoneSameInstant(ZoneOffset.UTC)
             .toOffsetDateTime();
-    }
-
-    private LocalDateTime sanitizeZoneToResponse(OffsetDateTime odt) {
-        return odt.atZoneSameInstant(ZoneId.of("America/Sao_Paulo"))
-            .toLocalDateTime();
     }
 }
